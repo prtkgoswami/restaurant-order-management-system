@@ -1,6 +1,6 @@
-# Pizza Order Manager
+# Restaurant Order Management System
 
-A full-stack real-time pizza ordering system managed by a kitchen dashboard.
+A full-stack real-time pizza ordering system managed by a kitchen dashboard. Similar system can be modified to serve any restaurant
 
 ## Project Structure
 
