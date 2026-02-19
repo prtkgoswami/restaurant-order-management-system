@@ -9,7 +9,7 @@ const TAX_RATE = 0.055;
 
 const SummarySection = ({ pricingData }: { pricingData: Pricing }) => {
   return (
-    <section className="w-[80%]">
+    <section className="w-full md:w-[80%]">
       <h4 className="text-xl font-light uppercase">Summary</h4>
       <div className="flex flex-col gap-3 mt-5">
         <div className="flex justify-between items-center px-3">
@@ -46,10 +46,12 @@ const OrderDetails = ({
   setContactNumber: (val: string) => void;
 }) => {
   return (
-    <section className="w-[80%]">
+    <section className="w-full md:w-[80%]">
       <h4 className="text-xl font-light uppercase">Customer Details</h4>
       <div className="flex flex-col gap-1 px-3 mt-3">
-        <label className="text-sm uppercase">Name <span className="text-red-600">*</span></label>
+        <label className="text-sm uppercase">
+          Name <span className="text-red-600">*</span>
+        </label>
         <input
           type="text"
           name="name"
@@ -57,7 +59,9 @@ const OrderDetails = ({
           onChange={(e) => setName(e.target.value)}
           className="border border-zinc-100 text-lg px-2 py-1 rounded-lg"
         />
-        <label className="text-sm uppercase mt-4">Contact Number <span className="text-red-600">*</span></label>
+        <label className="text-sm uppercase mt-4">
+          Contact Number <span className="text-red-600">*</span>
+        </label>
         <input
           type="text"
           name="contact-number"
@@ -74,7 +78,7 @@ const PaymentSection = () => {
   const [name, setName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const { totalAmount, items } = useCart();
-  const {order, isLoading, error, placeOrder} = useOrder();
+  const { order, isLoading, error, placeOrder } = useOrder();
   const navigate = useNavigate();
 
   const pricing: Pricing = useMemo(() => {
@@ -82,38 +86,38 @@ const PaymentSection = () => {
     const tax = TAX_RATE * totalAmount;
     const finalPrice = totalAmount + convenienceFee + tax;
     return {
-        totalMRP: totalAmount,
-        convenienceFeeRate: CONVENIENCE_FEE_RATE,
-        convenienceFeeAmount: convenienceFee,
-        taxRate: TAX_RATE,
-        taxAmount: tax,
-        finalAmount: finalPrice
-    }
-  }, [totalAmount])
+      totalMRP: totalAmount,
+      convenienceFeeRate: CONVENIENCE_FEE_RATE,
+      convenienceFeeAmount: convenienceFee,
+      taxRate: TAX_RATE,
+      taxAmount: tax,
+      finalAmount: finalPrice,
+    };
+  }, [totalAmount]);
 
   const handlePlaceOrder = () => {
     const payload: Order = {
-        items: items.map(item => ({
-            pizzaId: item.id,
-            ...item
-        })),
-        customer: {
-            name,
-            contactNumber
-        },
-        pricing
+      items: items.map((item) => ({
+        pizzaId: item.id,
+        ...item,
+      })),
+      customer: {
+        name,
+        contactNumber,
+      },
+      pricing,
     };
     placeOrder(payload);
-  }
+  };
 
   useEffect(() => {
     if (order && order.id) {
-        navigate(`/order/${order.id}`)
+      navigate(`/order/${order.id}`);
     }
-  }, [order, order?.id])
+  }, [order, order?.id]);
 
   return (
-    <div className="h-full w-2/5 p-5 flex flex-col items-center justify-between">
+    <div className="h-full w-full md:w-2/5 p-5 flex flex-col items-center justify-between">
       <div className="w-full flex flex-col items-center gap-8">
         <SummarySection pricingData={pricing} />
         <OrderDetails
@@ -125,7 +129,7 @@ const PaymentSection = () => {
       </div>
       <button
         type="button"
-        className="text-zinc-100 bg-green-600 hover:bg-green-700 disabled:bg-zinc-500 text-lg px-5 py-3 rounded-lg w-[60%]"
+        className="text-zinc-100 bg-green-600 hover:bg-green-700 disabled:bg-zinc-500 text-lg px-5 py-3 rounded-lg w-[60%] mt-5"
         onClick={handlePlaceOrder}
         disabled={isLoading || !name || !contactNumber}
       >
